@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 const Game = () => {
   const [startGame, setStartGame] = useState(false);
   const [ballPosition, setBallPosition] = useState({ x: 0, y: 0 });
+  const [hasMoved, setHasMoved] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "ArrowRight" && startGame) {
+      if (event.key === "ArrowRight" && startGame && !hasMoved) {
         setBallPosition((prevPosition) => ({
           ...prevPosition,
           x: prevPosition.x + 5,
         }));
+        setHasMoved(true);
       }
     };
 
@@ -19,23 +21,11 @@ const Game = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [startGame]);
+  }, [startGame, hasMoved]);
 
   const handleStartGame = () => {
     setStartGame(true);
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (ballPosition.x === 5) {
-        clearTimeout(timer);
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [ballPosition]);
 
   return (
     <div>
