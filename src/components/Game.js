@@ -25,6 +25,18 @@ const Game = () => {
     setStartGame(true);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (ballPosition.x === 5) {
+        clearTimeout(timer);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [ballPosition]);
+
   return (
     <div>
       {!startGame ? (
